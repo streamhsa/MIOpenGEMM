@@ -13,6 +13,7 @@ configure_file(config.hpp.install dev_include/miopengemm/config.hpp)
 file(GLOB_RECURSE source_files src/*.cpp)
 
 add_library(miopengemm ${source_files})
+set ( CMAKE_SHARED_LINKER_FLAGS "-Wl,--rpath,$ENV{ROCM_RPATH}" )
 
 target_link_libraries(miopengemm PUBLIC ${OPENCL_LIBRARIES} ${OpenBLAS_LIB} ${CLBLAST_LIB} ${ISAAC_LIB})
 
@@ -70,6 +71,7 @@ rocm_create_package(
     DESCRIPTION "A tool for generating OpenCL matrix multiplication (GEMM) kernels"
     MAINTAINER "Paul Fultz II <paul.fultz@amd.com>"
     LDCONFIG
+    LDCONFIG_DIR "/opt/rocm/lib64"
 )
 
 rocm_install_symlink_subdir(${miopengemm_INSTALL_DIR})
